@@ -218,6 +218,8 @@ def run_experiment(config: ExperimentConfig = DEFAULT_CONFIG) -> None:
         log_line(f">> Output directory: {output_dir}", log_file)
 
         for trial in range(config.trials):
+            trial_seed = config.seed + trial
+            seed_everything(trial_seed)
             indices = list(range(config.num_train))
             random.shuffle(indices)
             labeled_set = indices[: config.acquisition_size]

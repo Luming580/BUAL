@@ -156,14 +156,14 @@ def get_uncertainty(
         inputs = inputs.to(device, non_blocking=True)
 
         out_bb, _, _, features = models["backbone"](inputs)
-        prob_bb = F.softmax(out_bb, dim=1, dtype=torch.float32)
+        # prob_bb = F.softmax(out_bb, dim=1, dtype=torch.float32)
 
         pred_loss = models["module"](features).view(inputs.size(0))
 
         out_dwt, _, _, _ = models["dwt"](inputs)
-        prob_dwt = F.softmax(out_dwt, dim=1, dtype=torch.float32)
+        # prob_dwt = F.softmax(out_dwt, dim=1, dtype=torch.float32)
 
-        discrepancy = 1 - F.cosine_similarity(prob_bb, prob_dwt, dim=1)
+        discrepancy = 1 - F.cosine_similarity(out_bb, out_dwt, dim=1)
         discrepancy_list.append(discrepancy.cpu())
         predicted_loss_list.append(pred_loss.cpu())
 
